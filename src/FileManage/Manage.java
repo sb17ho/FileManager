@@ -1,36 +1,34 @@
 package FileManage;
 
 import java.io.File;
-import java.util.Objects;
 
 public class Manage {
-
-    private final File file;
     private String flag;
 
     Manage(String location, String flag) {
-        file = new File(location);
         this.flag = flag;
-        manage(location);
+        manage(new File(location));
     }
 
     // Handle Empty Folders
-    void manage(String location) {
-        if (file.listFiles() != null && Objects.requireNonNull(file.listFiles()).length > 0) {
-            for (File f : Objects.requireNonNull(file.listFiles())) {
-                String filename = f.getPath();
-                createFolderAddFiles(f, location, getExt(filename));
+    void manage(File location) {
+        File[] files = location.listFiles();
+
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory()) manage(f);
+                createFolderAddFiles(f, location, getExt(f));
             }
         }
     }
 
-    protected String getExt(String filename) {
-        String[] ext = filename.split("\\.");
+    protected String getExt(File filename) {
+        String[] ext = filename.toString().split("\\.");
         return ext[ext.length - 1];
     }
 
-    protected void createFolderAddFiles(File path, String location, String ext) {
-        File b = new File(location + "\\" + ext.toUpperCase());
+    protected void createFolderAddFiles(File path, File location, String ext) {
+        File b = new File(location.toString() + "\\" + ext.toUpperCase());
         System.out.println(b.mkdir());
         System.out.println(path.renameTo(new File(b.getPath() + "\\" + path.getName())));
     }
