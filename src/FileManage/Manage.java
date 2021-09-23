@@ -3,10 +3,14 @@ package FileManage;
 import java.io.File;
 
 public class Manage {
-    private String flag;
+    private String separator;
 
-    Manage(String location, String flag) {
-        this.flag = flag;
+    Manage(String location, String flag, String OS) {
+        if (OS.contains("linux")) {
+            separator = "/";
+        } else if (OS.contains("win") || OS.contains("windows")) {
+            separator = "\\";
+        }
         manage(new File(location));
     }
 
@@ -16,10 +20,18 @@ public class Manage {
 
         if (files != null) {
             for (File f : files) {
-                if (f.isDirectory()) manage(f);
+                if (f.isDirectory() && !extensionNamedFolder(f)) {
+                    manage(f);
+                } else {
+                    continue;
+                }
                 createFolderAddFiles(f, location, getExt(f));
             }
         }
+    }
+
+    protected boolean extensionNamedFolder(File directory) {
+        return directory.getName().equals(getExt(directory).toUpperCase());
     }
 
     protected String getExt(File filename) {
@@ -28,8 +40,8 @@ public class Manage {
     }
 
     protected void createFolderAddFiles(File path, File location, String ext) {
-        File b = new File(location.toString() + "\\" + ext.toUpperCase());
+        File b = new File(location.toString() + separator + ext.toUpperCase());
         System.out.println(b.mkdir());
-        System.out.println(path.renameTo(new File(b.getPath() + "\\" + path.getName())));
+        System.out.println(path.renameTo(new File(b.getPath() + separator + path.getName())));
     }
 }
