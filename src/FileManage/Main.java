@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Main {
 
+    //TODO: Make sure to check if the directory is OS supported or matches it pattern
     Main() {
         System.out.println("Provide a directory to apply cleanup: ");
         String path = new Scanner(System.in).nextLine();

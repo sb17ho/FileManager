@@ -23,7 +23,7 @@ public class Manage {
                 if (f.isDirectory() && checkIfEmpty(f)) deleteDirectory(f);
                 if (f.isDirectory() && !extensionNamedFolder(f)) {
                     manage(f);
-                } else {
+                } else if (extensionNamedFolder(f)){
                     continue;
                 }
                 createFolderAddFiles(f, location, getExt(f));
