@@ -1,6 +1,7 @@
 package FileManage;
 
 import java.io.File;
+import java.util.Objects;
 
 public class Manage {
     private String separator;
@@ -14,12 +15,12 @@ public class Manage {
         manage(new File(location));
     }
 
-    // Handle Empty Folders
     void manage(File location) {
         File[] files = location.listFiles();
 
         if (files != null) {
             for (File f : files) {
+                if (f.isDirectory() && checkIfEmpty(f)) deleteDirectory(f);
                 if (f.isDirectory() && !extensionNamedFolder(f)) {
                     manage(f);
                 } else {
@@ -28,6 +29,18 @@ public class Manage {
                 createFolderAddFiles(f, location, getExt(f));
             }
         }
+    }
+
+    protected void deleteDirectory(File directory) {
+        System.out.println(directory.delete() ? directory.getName() + " Deleted Since Empty" : null);
+    }
+
+    protected boolean checkIfEmpty(File directory) {
+        if (directory.listFiles() != null && Objects.requireNonNull(directory.listFiles()).length <= 0) {
+            return true;
+        }
+
+        return false;
     }
 
     protected boolean extensionNamedFolder(File directory) {
@@ -41,7 +54,7 @@ public class Manage {
 
     protected void createFolderAddFiles(File path, File location, String ext) {
         File b = new File(location.toString() + separator + ext.toUpperCase());
-        System.out.println(b.mkdir());
-        System.out.println(path.renameTo(new File(b.getPath() + separator + path.getName())));
+        System.out.println(b.mkdir() ? b.getName() + " Successfully Created" : b.getName() + " Already exist");
+        path.renameTo(new File(b.getPath() + separator + path.getName()));
     }
 }
