@@ -17,7 +17,7 @@ public class Main {
         String flag = new Scanner(System.in).nextLine();
         while (!(flag.toLowerCase().equals("n") || flag.toLowerCase().equals("y"))) {
             System.out.println("Not a valid input.\nExpected (Y/N): ");
-            flag = new Scanner(System.in).nextLine();
+            flag = new Scanner(System.in).nextLine().toLowerCase();
         }
 
         Manage m = new Manage(path, flag, System.getProperty("os.name").toLowerCase());
