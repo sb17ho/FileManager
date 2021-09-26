@@ -84,17 +84,12 @@ public class Manage {
     }
 
     protected boolean checkIfEmpty(File directory) {
-        if (directory.listFiles() != null && Objects.requireNonNull(directory.listFiles()).length <= 0) {
-            return true;
-        }
-
-        return false;
+        return directory.listFiles() != null && Objects.requireNonNull(directory.listFiles()).length <= 0;
     }
 
     protected boolean extensionNamedFolder(File directory) {
         String[] directoryName = directory.toString().split(separator);
-        boolean ans = extensions.contains(directoryName[directoryName.length - 1]);
-        return ans;
+        return extensions.contains(directoryName[directoryName.length - 1]);
     }
 
     protected String getExt(File filename) {
